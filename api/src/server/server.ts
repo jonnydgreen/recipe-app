@@ -19,6 +19,11 @@ export class Server {
       requestIdLogLabel: "requestId",
       genReqId: () => Crypto.randomUUID(),
     }) as unknown as Fastify.FastifyInstance<Http2SecureServer>;
+
+    // Set x-request-id header on the response
+    this._server.addHook("onRequest", async (request, reply) => {
+      reply.header("x-request-id", request.id);
+    });
   }
 
   public async start(): Promise<Fastify.FastifyInstance<Http2SecureServer>> {

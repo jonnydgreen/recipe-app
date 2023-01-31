@@ -50,7 +50,9 @@ export class RecipeDatabase {
       });
       response = await this.serverContext.db.recipe.findMany({
         where: {
-          ...(input.name ? { name: input.name } : {}),
+          ...(input.name
+            ? { name: { contains: input.name, mode: "insensitive" } }
+            : {}),
         },
         include: {
           ingredients: true,
