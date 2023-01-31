@@ -1,0 +1,83 @@
+enum RecipeIngredientMeasureUnit {
+  G
+  TBSP
+  TSP
+}
+
+type RecipeIngredientMeasure {
+  value: Float!
+  unit: RecipeIngredientMeasureUnit
+}
+
+type RecipeIngredient {
+  name: String!
+  measure: RecipeIngredientMeasure!
+}
+
+type RecipeMethodStep {
+  instructions: String!
+}
+
+type Recipe {
+  name: String!
+  ingredients: [RecipeIngredient!]!
+  method: [RecipeMethodStep!]!
+}
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+}
+
+type RecipeEdge {
+  node: Recipe!
+}
+
+type GetFavouriteRecipesResponse {
+  edges: [RecipeEdge!]!
+  pageInfo: PageInfo!
+  total: Int!
+}
+
+input GetFavouriteRecipesInput {
+  name: String
+}
+
+type Query {
+  getFavouriteRecipes(input: GetFavouriteRecipesInput!): GetFavouriteRecipesResponse
+}
+
+type ServerError {
+  message: String!
+  code: String!
+}
+
+type AddFavouriteRecipeResult {
+  message: String!
+}
+
+union AddFavouriteRecipeResponse = AddFavouriteRecipeResult | ServerError
+
+input AddFavouriteRecipeIngredientMeasureInput {
+  value: Float!
+  unit: RecipeIngredientMeasureUnit
+}
+
+input AddFavouriteRecipeIngredientInput {
+  name: String!
+  measure: AddFavouriteRecipeIngredientMeasureInput!
+}
+
+input AddFavouriteRecipeMethodStepInput {
+  instructions: String!
+}
+
+input AddFavouriteRecipeInput {
+  name: String!
+  ingredients: [AddFavouriteRecipeIngredientInput!]!
+  method: [AddFavouriteRecipeMethodStepInput!]!
+}
+
+type Mutation {
+  addFavouriteRecipe(input: AddFavouriteRecipeInput!): AddFavouriteRecipeResponse
+}

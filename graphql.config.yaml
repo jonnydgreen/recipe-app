@@ -1,0 +1,16 @@
+schema: "api/schema.graphql"
+# documents: "ui/operations/*.{ts,tsx}"
+extensions:
+  codegen:
+    overwrite: true
+    generates:
+      # ./app/graphql.tsx:
+      #   plugins:
+      #     - "typescript"
+      #     - "typescript-operations"
+      ./api/src/features/graphql.type.ts:
+        plugins:
+          - "typescript"
+      ./ui/graphql.schema.json:
+        plugins:
+          - "introspection"

@@ -1,0 +1,17 @@
+{
+  "name": "recipe-book",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "postinstall": "(cd api && npm install) && (cd ui && npm install)",
+    "gen": "graphql-codegen --config graphql.config.yaml"
+  },
+  "dependencies": {
+    "@graphql-codegen/add": "3.2.1",
+    "@graphql-codegen/cli": "2.12.1",
+    "@graphql-codegen/introspection": "2.2.1",
+    "@graphql-codegen/typescript": "2.7.3",
+    "@graphql-codegen/typescript-operations": "2.5.3",
+    "@graphql-codegen/typescript-react-apollo": "3.3.3"
+  }
+}

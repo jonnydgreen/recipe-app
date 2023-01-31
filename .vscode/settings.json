@@ -1,0 +1,13 @@
+{
+  "ponicode.testSettings.testLocation.locationType": "Same folder as source file",
+  "ponicode.testSettings.testLocation.path": "{rootDir}/{filePath}/{fileName}.test.{ext}",
+  "cSpell.words": [
+    "codegen",
+    "graphiql",
+    "Inversify",
+    "opentelemetry",
+    "pino",
+    "TBSP",
+    "tsbuildinfo"
+  ]
+}

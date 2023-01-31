@@ -1,0 +1,51 @@
+version: '3.8'
+services:
+  recipe-book-db:
+    image: postgres:14.1-alpine
+    restart: always
+    container_name: recipe-book-db
+    expose:
+      - 5432
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - '5432:5432'
+    volumes: 
+      - db:/var/lib/postgresql/data
+
+  recipe-book-api:
+    build:
+      context: ./api
+      target: local
+    # Running in local dev
+    container_name: recipe-book-api
+    restart: always
+    environment:
+      - PORT=4000
+      - ENV=dev
+      - SERVICE_NAME=recipe-book-api
+    depends_on:
+      - recipe-book-db
+    ports:
+        - "4000:4000"
+    volumes:
+       - "./api:/usr/src/app/"
+       - "/usr/src/app/node_modules"
+    links:
+      - recipe-book-db
+
+  recipe-book-ui:
+    build:
+      context: ./ui
+    ports:
+      - "3000:3000"
+    container_name: recipe-book-ui
+    stdin_open: true
+    volumes:
+       - ./ui:/usr/src/app/ui
+       - /usr/src/app/ui/node_modules
+
+volumes:
+  db:
+    driver: local
