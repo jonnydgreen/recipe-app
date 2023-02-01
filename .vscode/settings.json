@@ -6,6 +6,7 @@
     "graphiql",
     "headlessui",
     "Inversify",
+    "Memorystore",
     "opentelemetry",
     "pino",
     "TBSP",

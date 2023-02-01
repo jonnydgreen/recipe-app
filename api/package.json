@@ -7,7 +7,7 @@
     "clean": "rm -rf dist tsconfig.tsbuildinfo .nyc_output && tsc -b --clean .",
     "compile": "tsc -b -v .",
     "build": "npm run clean && npm run -- compile",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && npm run compile",
     "dev": "nodemon -q --exec \"prisma migrate deploy && node .\""
   },
   "license": "ISC",

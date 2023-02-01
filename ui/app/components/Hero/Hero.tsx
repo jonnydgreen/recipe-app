@@ -30,7 +30,7 @@ export function Hero() {
                 Add your favourite recipes
               </p>
               <div className="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-                <Button className="flex items-center" size="large" onClick={() => setModalState({ open: true })}>
+                <Button id="add-favourite-recipe" className="flex items-center" size="large" onClick={() => setModalState({ open: true })}>
                   <span className="ml-2">Add favourite recipe</span>
                 </Button>
               </div>

@@ -18,7 +18,6 @@ export async function action({ request }: ActionArgs) {
       input.name = value
     }
     if (key.startsWith('ingredient')) {
-      console.log({ key })
       const [, rawIndex, field] = key.split('.')
       const index = Number(rawIndex)
       if (!ingredients[index]) {
@@ -41,11 +40,9 @@ export async function action({ request }: ActionArgs) {
   }
   input.ingredients = ingredients
   input.method = method
-  console.log(JSON.stringify(input, null, 2))
 
   try {
     const response = await client.request<AddFavouriteRecipeMutation>(AddFavouriteRecipe, { input })
-    console.log(response)
     const { addFavouriteRecipe } = response
     if (addFavouriteRecipe?.__typename === 'AddFavouriteRecipeResult') {
       return json({})
@@ -55,7 +52,6 @@ export async function action({ request }: ActionArgs) {
     }
     return json({})
   } catch (error: any) {
-    console.log(JSON.stringify(error.response, null, 2))
     return json({ error })
   }
 }
@@ -64,12 +60,12 @@ export async function loader({ request, params }: LoaderArgs) {
   try {
     const url = new URL(request.url)
     const search = new URLSearchParams(url.search)
-    const response = await client.request<GetFavouriteRecipesQuery>(GetFavouriteRecipes, { input: { name: search.get('recipeName')} })
-    console.log(response)
+    const response = await client.request<GetFavouriteRecipesQuery>(GetFavouriteRecipes, {
+      input: { name: search.get('recipeName') }
+    })
     const { getFavouriteRecipes } = response
     return json({ data: getFavouriteRecipes })
   } catch (error: any) {
-    console.log(JSON.stringify(error.response, null, 2))
     return json({ error })
   }
 }
@@ -81,7 +77,6 @@ interface LoaderType {
 
 export default function Index() {
   const { data } = useLoaderData<LoaderType>()
-  console.log(data)
   return (
     <PageLayout>
       <Hero />
@@ -92,12 +87,14 @@ export default function Index() {
             <div className="divide-y-2 divide-slate-400 rounded-md border border-slate-300 bg-slate-100 p-4">
               Press [enter] to search for recipe by name:
               <Form className="text-gray-900">
-                <TextField type="text" name="recipeName" defaultValue="" />
+                <TextField id="search-for-recipe-by-name" type="text" name="recipeName" defaultValue="" />
               </Form>
             </div>
-            {data?.edges.map((edge, index) => (
-              <RecipeItem key={`recipe-${index}`} {...edge.node} />
-            ))}
+            <div id="recipes" className="space-y-6">
+              {data?.edges.map((edge, index) => (
+                <RecipeItem key={`recipe-${index}`} {...edge.node} />
+              ))}
+            </div>
           </Box>
         </div>
       </div>

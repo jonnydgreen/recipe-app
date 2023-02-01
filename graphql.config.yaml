@@ -1,10 +1,10 @@
 schema: "api/schema.graphql"
-documents: "frontend/app/graphql/*.ts"
+documents: "ui/app/graphql/*.ts"
 extensions:
   codegen:
     overwrite: true
     generates:
-      ./frontend/app/graphql.type.tsx:
+      ./ui/app/graphql.type.tsx:
         plugins:
           - "typescript"
           - "typescript-operations"

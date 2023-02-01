@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   recipe-book-db:
     image: postgres:14.1-alpine
@@ -13,6 +12,11 @@ services:
       - '5432:5432'
     volumes: 
       - db:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
 
   recipe-book-api:
     build:
@@ -26,7 +30,10 @@ services:
       - ENV=dev
       - SERVICE_NAME=recipe-book-api
     depends_on:
-      - recipe-book-db
+      recipe-book-db:
+        condition: service_healthy
+    expose:
+      - "4000"
     ports:
         - "4000:4000"
     volumes:
@@ -38,13 +45,17 @@ services:
   recipe-book-ui:
     build:
       context: ./ui
+    depends_on:
+      - recipe-book-api
     ports:
       - "3000:3000"
+    environment:
+      - API_URL=http://recipe-book-api:4000/graphql
     container_name: recipe-book-ui
     stdin_open: true
     volumes:
-       - ./ui:/usr/src/app/ui
-       - /usr/src/app/ui/node_modules
+       - "./ui:/usr/src/app/"
+       - "/usr/src/app/node_modules"
 
 volumes:
   db:
